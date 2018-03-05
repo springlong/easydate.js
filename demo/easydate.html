@@ -39,19 +39,19 @@
     // 日期时间的计算
     // ================================================
 
-    console.log('秒钟+1:', edate.calc('second', 1));
-    console.log('分钟+1:', edate.calc('minute', 1));
-    console.log('时钟+1:', edate.calc('hour', 1));
-    console.log('天数+1:', edate.calc('day', 1));
-    console.log('月份+1:', edate.calc('month', 1));
-    console.log('年份+1:', edate.calc('year', 1));
-    console.log('截取日期部分', edate.toDatePart());
+    console.log('秒钟+1:', edate.calc('second', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('分钟+1:', edate.calc('minute', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('时钟+1:', edate.calc('hour', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('天数+1:', edate.calc('day', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('月份+1:', edate.calc('month', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('年份+1:', edate.calc('year', 1));  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('截取日期部分', edate.toDatePart());  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
 
 
     // 链式操作
     // ================================================
 
-    console.log('链式操作:', easyDate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).format());
+    console.log('链式操作:', easyDate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).format());  // 2018/03/23 12:00:00
 </script>
 </body>
 </html>
