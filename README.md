@@ -54,22 +54,22 @@ edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
 ```js
 
-// 秒钟+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 秒钟+1 Sat Mar 17 2018 16:08:33 GMT+0800
 edate.calc('second', 1);
 
-// 分钟+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 分钟+1 Sat Mar 17 2018 16:09:33 GMT+0800
 edate.calc('minute', 1);
 
-// 时钟+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 时钟+1 Sat Mar 17 2018 17:09:33 GMT+0800
 edate.calc('hour', 1);
 
-// 天数+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 天数+1 Sun Mar 18 2018 17:09:33 GMT+0800
 edate.calc('day', 1);
 
-// 月份+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 月份+1 Wed Apr 18 2018 17:09:33 GMT+0800
 edate.calc('month', 1);
 
-// 年份+1 Thu Apr 18 2019 00:00:00 GMT+0800
+// 年份+1 Thu Apr 18 2019 17:09:33 GMT+0800
 edate.calc('year', 1);
 
 // 截取日期部分 Thu Apr 18 2019 00:00:00 GMT+0800
