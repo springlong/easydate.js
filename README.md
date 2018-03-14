@@ -1,6 +1,6 @@
 # easydate.js
 
-一款简易实用的日期时间操作函数！
+一款简易实用的JavaScript日期时间处理工具！
 
 ## 使用easydate
 
@@ -30,12 +30,6 @@ const edate4 = easydate();
 // (Date) 日期对象
 edate.date;
 
-// (boolean) 判断日期时间的有效性
-edate.isValid();
-
-// (boolean) 判断是否是闰年
-edate.isLeapYear();
-
 // (number) 返回毫秒级快照
 edate.valueOf();
 
@@ -62,6 +56,21 @@ edate.getSeconds();
 
 // (number) 返回毫秒数
 edate.getMilliseconds();
+
+// (boolean) 判断日期时间的有效性
+edate.isValid();
+
+// (boolean) 判断是否是闰年
+edate.isLeapYear();
+
+// (number) 返回当前日期时间属于一年中的第几周
+edate.getWeekth();
+
+// (number) 返回当前日期时间属于星期几
+edate.getWeekday();
+
+// (number) 返回当前日期时间所处的当月有多少天
+edate.getMonthDays();
 
 ```
 
@@ -197,14 +206,31 @@ easydate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).for
 
 ```js
 
-// 判断日期时间的有效性
+// 判断日期时间的有效性，
+// 返回值类型: boolean
 easydate.isValid();  // false
 easydate.isValid('2018-03-28 xx:33:25');  // false
 easydate.isValid('2018-03-28 18:33:25');  // true
 
-// 判断是否为闰年
+// 判断是否为闰年，
+// 返回值类型: boolean
 easydate.isLeapYear();  // false
 easydate.isLeapYear(2018);  // false
 easydate.isLeapYear(2020);  // true
+
+// 返回日期时间的星期相关的信息
+// 返回值类型：{weekth: 第几周(Number), weekday: 星期几(String)}
+// 如果是无效日期则返回{weekth: NaN, weekday: NaN}
+easydate.getWeekInfo('2018-01-01');  // {weekth: 1, weekday: "星期一"}
+easydate.getWeekInfo('2018-12-29');  // {weekth: 52, weekday: "星期六"}
+easydate.getWeekInfo('2018-12-31');  // {weekth: 53, weekday: "星期一"}
+
+// 返回一个日期时间所处的当月有多少天
+// 返回值类型：number
+// 如果是无效日期则返回NaN
+easydate.getMonthDays('2018-01-01');  // 31
+easydate.getMonthDays('2018-02-01');  // 28
+easydate.getMonthDays('2018-03-01');  // 31
+easydate.getMonthDays('2018-04-01');  // 30
 
 ```

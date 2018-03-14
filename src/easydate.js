@@ -1,5 +1,5 @@
 /**
- * @file        一款简易实用的日期时间操作函数！
+ * @file        一款简易实用的JavaScript日期时间处理工具！
  * @version     1.0.0
  * @author      龙泉 <yangtuan2009@126.com>
  */
@@ -41,6 +41,24 @@
     easydateCreate.prototype = {
 
         /**
+         * 返回Date的毫秒级快照
+         * @return {Number}
+         */
+        valueOf: function() {
+            return this.date.getTime();
+        },
+
+
+        /**
+         * 返回Date的字符串表示
+         * @return {String}
+         */
+        toString: function() {
+            return this.format();
+        },
+
+
+        /**
          * 判断日期时间的有效性
          * @return {Boolean}
          */
@@ -59,20 +77,29 @@
 
 
         /**
-         * 返回Date的毫秒级快照
-         * @return {Number}
+         * 返回当前日期时间属于一年中的第几周，如果是无效日期则返回NaN。
+         * @return {number}
          */
-        valueOf: function() {
-            return this.date.getTime();
+        getWeekth: function() {
+            return easydate.getWeekInfo(this.date).weekth;
         },
 
 
         /**
-         * 返回Date的字符串表示
-         * @return {String}
+         * 返回当前日期时间属于星期几，如果是无效日期则返回NaN。
+         * @return {number}
          */
-        toString: function() {
-            return this.format();
+        getWeekday: function() {
+            return easydate.getWeekInfo(this.date).weekday;
+        },
+
+
+        /**
+         * 返回当前日期时间所处的当月有多少天，如果是无效日期则返回NaN。
+         * @return {number}
+         */
+        getMonthDays: function() {
+            return easydate.getMonthDays(this.date);
         },
 
 
@@ -210,6 +237,20 @@
 
 
     /**
+     * 判断一个年份是否是闰年
+     * @param  {Number}  year
+     * @return {Boolean}
+     */
+    easydate.isLeapYear = function(year) {
+
+        year = Number(year);
+
+        // 判断是否为闰年（普通年能被4整除且不能被100整除的年份是闰年，世纪年能被400整除的年份是闰年）
+        return isNaN(year) ? false : (year % 400 === 0 || year % 4 === 0 && year % 100 !== 0);
+    };
+
+
+    /**
      * 判断一个日期字符串、日期对象是否是有效的日期时间
      * @param  {String|Date}  dateStr 需要判断的日期
      * @return {Boolean}
@@ -221,16 +262,54 @@
 
 
     /**
-     * 判断一个年份是否是闰年
-     * @param  {Number}  year
-     * @return {Boolean}
+     * 返回日期时间的星期相关的信息，即一年中第几周的星期几。
+     * 如果是无效日期则返回{weekth: NaN, weekday: NaN}。
+     * @param  {String|Date} dateStr 需要判断的日期
+     * @return {Object}      {weekth: 第几周(Number), weekday: 星期几(String)}
      */
-    easydate.isLeapYear = function(year) {
+    easydate.getWeekInfo = function (dateStr) {
 
-        year = Number(year);
+        var oDate = createDate(dateStr || ''),
+            year = oDate.getFullYear();
 
-        // 判断是否为闰年（普通年能被4整除且不能被100整除的年份是闰年，世纪年能被400整除的年份是闰年）
-        return isNaN(year) ? false : (year % 400 === 0 || year % 4 === 0 && year % 100 !== 0);
+        if(isNaN(year)) return {weekth: NaN, weekday: NaN};
+
+        var first = new Date(year, 0, 1),
+            firstWeekday = first.getDay(),
+            next = new Date(year+1, 0, 1),
+            nextWeekday = next.getDay(),
+            dateDiff = Math.floor((oDate.getTime() - first.getTime()) / (1000*60*60*24)),  // 与1月1日相差的天数
+            weekth = Math.floor((dateDiff + firstWeekday) / 7) + 1,  // 1月1日所处的周为一年的第一周，通过与1月1日相差的天数和1月1日所处的星期几相加再除以1周的基数7即可获得当前日期位于一年的第几周
+            weekday = '星期' + ['日', '一', '二', '三', '四', '五', '六'][oDate.getDay()];  // 当前前日期所表示的星期几
+
+        return {weekth: weekth, weekday: weekday};
+    };
+
+
+    /**
+     * 返回一个日期时间所处的当月有多少天，如果是无效日期则返回NaN。
+     * @param  {String|Date} dateStr 需要判断的日期
+     * @return {Number}       
+     */
+    easydate.getMonthDays = function (dateStr) {
+
+        var oDate = createDate(dateStr || ''),
+            month = oDate.getMonth() + 1;
+
+        // new Date(2014, 12, 0).getDate()的返回值是2014年11月的最后一天
+        return isNaN(month) ? NaN : new Date(oDate.getFullYear(), month, 0).getDate();
+    };
+
+
+    /**
+     * 计算两个日期时间之间的时间差，如果其中一方为无效日期则返回NaN。
+     * @param  {String|Date} dateStr1 日期时间1
+     * @param  {String|Date} dateStr2 日期时间2
+     * @param  {String} unit 时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'month'-月/'year'-年
+     * @return {Number}       
+     */
+    easydate.diff = function(dateStr1, dateStr2, unit) {
+
     };
 
 
@@ -276,3 +355,4 @@
     // 返回easydate
     return easydate;
 });
+
