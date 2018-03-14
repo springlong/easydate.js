@@ -37,7 +37,7 @@
         this.date = createDate(dateStr);
     }
 
-    // 原型
+    // 构造函数-原型
     easydateCreate.prototype = {
 
         /**
@@ -55,24 +55,6 @@
          */
         toString: function() {
             return this.format();
-        },
-
-
-        /**
-         * 判断日期时间的有效性
-         * @return {Boolean}
-         */
-        isValid: function() {
-            return !isNaN(this.date.getFullYear());
-        },
-
-
-        /**
-         * 判断是否是闰年
-         * @return {Boolean}
-         */
-        isLeapYear: function() {
-            return easydate.isLeapYear(this.date.getFullYear());
         },
 
 
@@ -100,6 +82,76 @@
          */
         getMonthDays: function() {
             return easydate.getMonthDays(this.date);
+        },
+
+
+        /**
+         * 判断日期时间的有效性
+         * @return {Boolean}
+         */
+        isValid: function() {
+            return !isNaN(this.date.getFullYear());
+        },
+
+
+        /**
+         * 判断是否是闰年
+         * @return {Boolean}
+         */
+        isLeapYear: function() {
+            return easydate.isLeapYear(this.date.getFullYear());
+        },
+
+
+        /**
+         * 判断当前日期是否在目标日期之前
+         * @param  {String|Date}  dateStr 需要判断的日期
+         * @return {Boolean}
+         */
+        isBefore: function(dateStr) {
+            return this.date.getTime() < createDate(dateStr || '').getTime();
+        },
+
+
+        /**
+         * 判断当前日期是否在目标日期之后
+         * @param  {String|Date}  dateStr 需要判断的日期
+         * @return {Boolean}
+         */
+        isAfter: function(dateStr) {
+            return this.date.getTime() > createDate(dateStr || '').getTime();
+        },
+
+
+        /**
+         * 判断当前日期是否和目标日期一致
+         * @param  {String|Date}  dateStr 需要判断的日期
+         * @return {Boolean}
+         */
+        isSame: function(dateStr) {
+            return this.date.getTime() === createDate(dateStr || '').getTime();
+        },
+
+
+        /**
+         * 判断当前日期是否介于两个日期之间
+         * @param  {String|Date}  dateStr1 需要判断的日期
+         * @param  {String|Date}  dateStr2 需要判断的日期
+         * @return {Boolean}
+         */
+        isBetween: function(dateStr1, dateStr2) {
+
+            var thisTime = this.date.getTime(),
+                timeStart = createDate(dateStr1 || '').getTime(),
+                timeEnd = createDate(dateStr2 || '').getTime(),
+                temp;
+
+            if(timeStart > timeEnd) {
+                temp = timeStart;
+                timeStart = timeEnd;
+                timeEnd = temp;
+            }
+            return thisTime >= timeStart && thisTime <= timeEnd;
         },
 
 
@@ -203,10 +255,19 @@
             this.date = new Date(oDate.getFullYear() + '/' + (oDate.getMonth() + 1) + '/' + oDate.getDate());
             return this;
         },
+
+
+        /**
+         * 根据当前日期时间克隆出一个新的对象实例
+         * @return {Object}
+         */
+        clone: function() {
+            return easydate(this.date.getTime());
+        }
     };
 
 
-    // 将原生Date的相关方法拷贝到原型
+    // 将原生Date的相关方法拷贝到构造函数的原型之中
     (function(){
 
         var getProps = ['getFullYear', 'getMonth', 'getDate', 'getDay', 'getHours', 'getMinutes', 'getSeconds', 'getMilliseconds'],
@@ -289,7 +350,7 @@
     /**
      * 返回一个日期时间所处的当月有多少天，如果是无效日期则返回NaN。
      * @param  {String|Date} dateStr 需要判断的日期
-     * @return {Number}       
+     * @return {Number}
      */
     easydate.getMonthDays = function (dateStr) {
 
@@ -302,14 +363,51 @@
 
 
     /**
-     * 计算两个日期时间之间的时间差，如果其中一方为无效日期则返回NaN。
-     * @param  {String|Date} dateStr1 日期时间1
-     * @param  {String|Date} dateStr2 日期时间2
-     * @param  {String} unit 时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'month'-月/'year'-年
-     * @return {Number}       
+     * 计算两个日期之间的时间差，单位默认以“天”表示。
+     * 如果其中一方为无效日期则返回NaN。
+     * @param  {String|Date} startDate 起始日期时间
+     * @param  {String|Date} endDate 结束日期时间
+     * @param  {String} unit 时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'json'-按级别展示
+     * @return {Number}
      */
-    easydate.diff = function(dateStr1, dateStr2, unit) {
+    easydate.diff = function(startDate, endDate, unit) {
 
+        var startTime, endTime, diffTime, result,
+            second = 1000,  // 1秒=1000毫秒
+            minute = second * 60,  // 1分=60秒
+            hour = minute * 60,  // 1小时=60分
+            day = hour * 24,  // 1天=24小时
+            timeJSON = {
+                'second': second,
+                'minute': minute,
+                'hour': hour,
+                'day': day
+            };
+
+        startDate = createDate(startDate || '');
+        endDate = createDate(endDate || '');
+        startTime = startDate.getTime();
+        endTime = endDate.getTime();
+        diffTime = Math.abs(endTime - startTime);
+
+        // 如果其中一方为无效日期则返回NaN
+        if(isNaN(startTime) || isNaN(endTime)) return NaN;
+
+        // 计算天、时、分、秒等单位的时间差，其他单位按照天计算时间差
+        result = Math.floor(diffTime / (timeJSON[unit] || day));
+        result = diffTime < 0 ? -result : result;
+
+        // 按级别展示
+        if(unit === 'json') {
+            return {
+                days: Math.floor(diffTime / timeJSON['hour'] / 24), // 天数
+                hours: Math.floor(diffTime / timeJSON['hour'] % 24), // 小时
+                minites: Math.floor(diffTime / timeJSON['minute'] % 60), // 分钟
+                seconds: Math.floor(diffTime / timeJSON['second'] % 60), // 秒钟
+            };
+        }
+
+        return result;
     };
 
 
@@ -329,9 +427,13 @@
         else if(typeof dateStr === 'number') {
             oDate = new Date(dateStr);
         }
-        // 日期对象
-        else if(dateStr && Object.prototype.toString.call(new Date()).toLowerCase() === "[object date]") {
+        // Date对象实例
+        else if(dateStr && Object.prototype.toString.call(dateStr).toLowerCase() === "[object date]") {
             oDate = new Date(dateStr.getTime());  // 新建实例，避免对原对象进行覆盖
+        }
+        // easydate对象实例
+        else if(dateStr instanceof easydateCreate) {
+            oDate = new Date(dateStr.valueOf());
         }
         // 缺省参数，默认为当前时间
         else {

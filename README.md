@@ -23,6 +23,33 @@ const edate4 = easydate();
 
 ```
 
+### 条件判断
+
+对于日期比较类方法的参数类型，可以是日期字符串、时间戳、Date对象实例、easydate对象实例。
+
+```js
+
+// (boolean) 判断日期时间的有效性
+edate.isValid();
+
+// (boolean) 判断是否是闰年
+edate.isLeapYear();
+
+//(boolean)  判断当前日期是否在目标日期之前
+edate.isBefore('2018/03/18');
+
+// (boolean) 判断当前日期是否在目标日期之后
+edate.isAfter('2018/03/16');
+
+// (boolean) 判断当前日期是否和目标日期一致
+edate.isSame('2018/03/17 16:08:32');
+
+// (boolean) 判断当前日期是否介于两个日期之间
+edate.isBetween('2018/03/18', '2018/03/16');
+
+
+```
+
 ### 获取日期时间的信息部分
 
 ```js
@@ -56,12 +83,6 @@ edate.getSeconds();
 
 // (number) 返回毫秒数
 edate.getMilliseconds();
-
-// (boolean) 判断日期时间的有效性
-edate.isValid();
-
-// (boolean) 判断是否是闰年
-edate.isLeapYear();
 
 // (number) 返回当前日期时间属于一年中的第几周
 edate.getWeekth();
@@ -232,5 +253,14 @@ easydate.getMonthDays('2018-01-01');  // 31
 easydate.getMonthDays('2018-02-01');  // 28
 easydate.getMonthDays('2018-03-01');  // 31
 easydate.getMonthDays('2018-04-01');  // 30
+
+// 计算两个日期之间的时间差，单位默认以“天”表示。
+easydate.diff('2018-01-01', false);  // NaN
+easydate.diff('2018-01-01', '2018-01-01');  // 相差0天
+easydate.diff('2018-03-14', '2018-03-30');  // 相差16天
+easydate.diff('2018-03-14', '2018-03-10', 'day');  // 相差4天
+easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'json');    // {days: 3, hours: 2, minites: 20, seconds: 1}
+easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'hour');    // 相差74小时
+easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'minute');  // 相差4460分钟
 
 ```
