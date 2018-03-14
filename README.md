@@ -90,6 +90,10 @@ edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
 ### 日期时间的计算
 
+操作结果返回 `easydate` 实例本身，因此可以进行链式操作。
+
+支持正负数，正数表示加上指定时间，负数表示减去指定时间。
+
 ```js
 
 // 参照上面代码中edate的值：
@@ -125,6 +129,38 @@ edate.toDatePart();
 
 ```
 
+### 设置日期时间的指定部分
+
+操作结果返回 `easydate` 实例本身，`setMonth()`中月份的值从 `1` ~ `12 。
+
+```js
+
+// 参照上面代码中edate的值：
+// 2018/04/18 00:00:00
+
+// 设置年份 2018/04/18 00:00:00
+edate.setFullYear(2019);  
+
+// 设置月份 2018/06/18 00:00:00
+edate.edate.setMonth(6);  
+
+// 设置当月的第几天 2018/06/25 00:00:00
+edate.setDate(25);
+
+// 设置时钟 2018/06/25 10:00:00
+edate.setHours(10);
+
+// 设置分钟 2018/06/25 10:32:00
+edate.setMinutes(32);
+
+// 设置秒钟 2018/06/25 10:32:58
+edate.setSeconds(58);
+
+// 设置毫秒 2018/06/25 10:32:58 100
+edate.setMilliseconds(100);
+
+```
+
 ### 链式操作
 
 
@@ -132,5 +168,23 @@ edate.toDatePart();
 
 // output: 2018/03/23 12:00:00
 easydate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).format();
+
+```
+
+
+### 静态方法
+
+
+```js
+
+// 判断日期时间的有效性
+easydate.isValid();  // false
+easydate.isValid('2018-03-28 xx:33:25');  // false
+easydate.isValid('2018-03-28 18:33:25');  // true
+
+// 判断是否为闰年
+easydate.isLeapYear();  // false
+easydate.isLeapYear(2018);  // false
+easydate.isLeapYear(2020);  // true
 
 ```
