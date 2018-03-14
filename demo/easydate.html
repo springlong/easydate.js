@@ -48,8 +48,7 @@
     console.log('返回秒钟:', edate.getSeconds());           // 32
     console.log('返回毫秒数:', edate.getMilliseconds());    // 0
     console.log('返回当前日期时间属于一年中的第几周:', edate.getWeekth());    // 11
-    console.log('返回当前日期时间属于星期几:', edate.getWeekday());    // 星期六
-    console.log('返回当前日期时间所处的当月有多少天:', edate.getMonthDays());    // 31
+    console.log('返回当前日期时间所处的当月有多少天:', edate.getMonthDays()); // 31
 
 
     // 日期时间的格式化输出
@@ -109,13 +108,13 @@
     console.log('判断是否为闰年:', easydate.isLeapYear(2018));
     console.log('判断是否为闰年:', easydate.isLeapYear(2020));
 
-    // 返回值类型：{weekth: 第几周(Number), weekday: 星期几(String)}
-    // 如果是无效日期则返回{weekth: NaN, weekday: NaN}
-    console.log('返回日期时间的星期相关的信息:', easydate.getWeekInfo('2018-01-01'));
-    console.log('返回日期时间的星期相关的信息:', easydate.getWeekInfo('2018-01-31'));
-    console.log('返回日期时间的星期相关的信息:', easydate.getWeekInfo('2018-03-14'));
-    console.log('返回日期时间的星期相关的信息:', easydate.getWeekInfo('2018-12-29'));
-    console.log('返回日期时间的星期相关的信息:', easydate.getWeekInfo('2018-12-31'));
+    // 返回值类型：number
+    // 如果是无效日期则返回NaN
+    console.log('返回一个日期时间处于一年中的第几周:', easydate.getWeekth('2018-01-01'));
+    console.log('返回一个日期时间处于一年中的第几周:', easydate.getWeekth('2018-01-31'));
+    console.log('返回一个日期时间处于一年中的第几周:', easydate.getWeekth('2018-03-14'));
+    console.log('返回一个日期时间处于一年中的第几周:', easydate.getWeekth('2018-12-29'));
+    console.log('返回一个日期时间处于一年中的第几周:', easydate.getWeekth('2018-12-31'));
 
     // 返回值类型：number
     // 如果是无效日期则返回NaN

@@ -87,9 +87,6 @@ edate.getMilliseconds();
 // (number) 返回当前日期时间属于一年中的第几周
 edate.getWeekth();
 
-// (number) 返回当前日期时间属于星期几
-edate.getWeekday();
-
 // (number) 返回当前日期时间所处的当月有多少天
 edate.getMonthDays();
 
@@ -243,12 +240,12 @@ easydate.isLeapYear();  // false
 easydate.isLeapYear(2018);  // false
 easydate.isLeapYear(2020);  // true
 
-// 返回日期时间的星期相关的信息
-// 返回值类型：{weekth: 第几周(Number), weekday: 星期几(String)}
-// 如果是无效日期则返回{weekth: NaN, weekday: NaN}
-easydate.getWeekInfo('2018-01-01');  // {weekth: 1, weekday: "星期一"}
-easydate.getWeekInfo('2018-12-29');  // {weekth: 52, weekday: "星期六"}
-easydate.getWeekInfo('2018-12-31');  // {weekth: 53, weekday: "星期一"}
+// 返回一个日期时间处于一年中的第几周
+// 返回值类型：number
+// 如果是无效日期则返回NaN
+easydate.getWeekth('2018-01-01');  // 1
+easydate.getWeekth('2018-12-29');  // 52
+easydate.getWeekth('2018-12-31');  // 53
 
 // 返回一个日期时间所处的当月有多少天
 // 返回值类型：number

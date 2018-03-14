@@ -63,16 +63,7 @@
          * @return {number}
          */
         getWeekth: function() {
-            return easydate.getWeekInfo(this.date).weekth;
-        },
-
-
-        /**
-         * 返回当前日期时间属于星期几，如果是无效日期则返回NaN。
-         * @return {number}
-         */
-        getWeekday: function() {
-            return easydate.getWeekInfo(this.date).weekday;
+            return easydate.getWeekth(this.date);
         },
 
 
@@ -323,27 +314,24 @@
 
 
     /**
-     * 返回日期时间的星期相关的信息，即一年中第几周的星期几。
-     * 如果是无效日期则返回{weekth: NaN, weekday: NaN}。
+     * 返回一个日期时间处于一年中的第几周。
+     * 如果是无效日期则返回NaN。
      * @param  {String|Date} dateStr 需要判断的日期
-     * @return {Object}      {weekth: 第几周(Number), weekday: 星期几(String)}
+     * @return {Number}
      */
-    easydate.getWeekInfo = function (dateStr) {
+    easydate.getWeekth = function (dateStr) {
 
         var oDate = createDate(dateStr || ''),
             year = oDate.getFullYear();
 
-        if(isNaN(year)) return {weekth: NaN, weekday: NaN};
+        if(isNaN(year)) return NaN;
 
         var first = new Date(year, 0, 1),
             firstWeekday = first.getDay(),
-            next = new Date(year+1, 0, 1),
-            nextWeekday = next.getDay(),
             dateDiff = Math.floor((oDate.getTime() - first.getTime()) / (1000*60*60*24)),  // 与1月1日相差的天数
-            weekth = Math.floor((dateDiff + firstWeekday) / 7) + 1,  // 1月1日所处的周为一年的第一周，通过与1月1日相差的天数和1月1日所处的星期几相加再除以1周的基数7即可获得当前日期位于一年的第几周
-            weekday = '星期' + ['日', '一', '二', '三', '四', '五', '六'][oDate.getDay()];  // 当前前日期所表示的星期几
+            weekth = Math.floor((dateDiff + firstWeekday) / 7) + 1;  // 1月1日所处的周为一年的第一周，通过与1月1日相差的天数和1月1日所处的星期几相加再除以1周的基数7即可获得当前日期位于一年的第几周
 
-        return {weekth: weekth, weekday: weekday};
+        return weekth;
     };
 
 
