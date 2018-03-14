@@ -175,7 +175,11 @@ edate.calc('year', 1);
 
 // 截取日期部分
 // 2018/04/18 00:00:00
-edate.toDatePart();
+edate.toDatePart();  
+
+// 克隆一份副本
+// 2018/04/18 00:00:00
+edate.clone();
 
 ```
 
