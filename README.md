@@ -31,37 +31,37 @@ const edate4 = easydate();
 edate.date;
 
 // (boolean) 判断日期时间的有效性
-edate.isValid();  // true
+edate.isValid();
 
 // (boolean) 判断是否是闰年
-edate.isLeapYear();  // flase
+edate.isLeapYear();
 
 // (number) 返回毫秒级快照
-edate.valueOf();  // 1521274112000
+edate.valueOf();
 
 // (number) 返回年份
-edate.getFullYear();  // 2018
+edate.getFullYear();
 
 // (number) 返回月份，月份值从1~12
-edate.getMonth();  // 3
+edate.getMonth();
 
 // (number) 返回当月的第几天
-edate.getDate();  // 17
+edate.getDate();
 
 // (number) 返回当周的第几天，值从0~6表示周日~周六
-edate.getDay();  // 6
+edate.getDay();
 
 // (number) 返回时钟
-edate.getHours();  // 16
+edate.getHours();
 
 // (number) 返回分钟
-edate.getMinutes();  // 8
+edate.getMinutes();
 
 // (number) 返回秒钟
-edate.getSeconds();  // 32
+edate.getSeconds();
 
 // (number) 返回毫秒数
-edate.getMilliseconds();  // 0
+edate.getMilliseconds();
 
 ```
 
@@ -92,26 +92,36 @@ edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
 ```js
 
+// 参照上面代码中edate的值：
+// 2018/03/17 16:08:32
+
 // 秒钟+1
-edate.calc('second', 1);  // 2018/03/17 16:08:33
+// 2018/03/17 16:08:33
+edate.calc('second', 1);  
 
 // 分钟+1
-edate.calc('minute', 1);  // 2018/03/17 16:09:33
+// 2018/03/17 16:09:33
+edate.calc('minute', 1);  
 
 // 时钟+1
-edate.calc('hour', 1);  // 2018/03/17 17:09:33
+// 2018/03/17 17:09:33
+edate.calc('hour', 1);  
 
 // 天数+1
-edate.calc('day', 1);  // 2018/03/18 17:09:33
+// 2018/03/18 17:09:33
+edate.calc('day', 1);  
 
 // 月份+1
-edate.calc('month', 1);  // 2018/04/18 17:09:33
+// 2018/04/18 17:09:33
+edate.calc('month', 1);  
 
 // 年份+1
-edate.calc('year', 1);  // 2019/04/18 17:09:33
+// 2019/04/18 17:09:33
+edate.calc('year', 1);  
 
 // 截取日期部分
-edate.toDatePart();  // 2018/04/18 00:00:00
+// 2018/04/18 00:00:00
+edate.toDatePart();
 
 ```
 
