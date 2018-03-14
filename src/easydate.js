@@ -16,7 +16,7 @@
     }
     else {
         // 浏览器全局模式
-        root.easyDate = factory();
+        root.easydate = factory();
     }
 
 })(this, function () {
@@ -26,45 +26,44 @@
      * @param  {Date|string|number} dateStr 日期对象|日期字符串|时间戳
      * @return {Object}
      */
-    function easyDate(dateStr) {
-        return new easyDateCreate(dateStr);
+    function easydate(dateStr) {
+        return new easydateCreate(dateStr);
     }
 
     // 构造函数
-    function easyDateCreate(dateStr) {
+    function easydateCreate(dateStr) {
 
-        var oDate;
-
-        // 日期字符串
-        if(typeof dateStr === 'string') {
-            oDate = new Date(dateStr.replace(/-/g, '/'));  // IE8不支持 2016-01-02 这种字符串转换
-        }
-        // 时间戳
-        else if(typeof dateStr === 'number') {
-            oDate = new Date(dateStr);
-        }
-        // 日期对象        
-        else if(dateStr && Object.prototype.toString.call(new Date()).toLowerCase() === "[object date]") {
-            oDate = new Date(dateStr.getTime());  // 新建实例，避免对原对象进行覆盖
-        }
-        // 缺省参数，默认为当前时间
-        else {
-            oDate = new Date();
-        }
-
-        // datetime: 始终表示easyDate对象所表述的当前日期时间 
-        this.datetime = oDate;
+        // easydate对象所表述的当前日期时间的Date类型对象
+        this.date = createDate(dateStr);
     }
 
     // 原型
-    easyDateCreate.prototype = {
+    easydateCreate.prototype = {
+
+        /**
+         * 判断日期时间的有效性
+         * @return {Boolean}
+         */
+        isValid: function() {
+            return !isNaN(this.date.getFullYear());
+        },
+
+
+        /**
+         * 判断是否是闰年
+         * @return {Boolean}
+         */
+        isLeapYear: function() {
+            return easydate.isLeapYear(this.date.getFullYear());
+        },
+
 
         /**
          * 返回Date的毫秒级快照
          * @return {Number}
          */
         valueOf: function() {
-            return this.datetime.getTime();
+            return this.date.getTime();
         },
 
 
@@ -84,7 +83,7 @@
          */
         format: function(formatStr) {
 
-            var oDate = this.datetime,
+            var oDate = this.date,
                 fullYear = oDate.getFullYear(),
                 year = (fullYear + '').substring(2),
                 month = oDate.getMonth() + 1,
@@ -135,7 +134,7 @@
          */
         calc: function(part, num) {
 
-            var oDate = this.datetime,
+            var oDate = this.date,
                 second = 1000,  // 1秒=1000毫秒
                 minute = second * 60,  // 1分=60秒
                 hour = minute * 60,  // 1小时=60分
@@ -162,7 +161,7 @@
                 result = dateValue + (timeJSON[part] || 0) * num;
             }
 
-            this.datetime = new Date(result);
+            this.date = new Date(result);
 
             return this;
         },
@@ -173,11 +172,95 @@
          * @return {this}
          */
         toDatePart: function() {
-            var oDate = this.datetime;
-            this.datetime = new Date(oDate.getFullYear() + '/' + (oDate.getMonth() + 1) + '/' + oDate.getDate());
+            var oDate = this.date;
+            this.date = new Date(oDate.getFullYear() + '/' + (oDate.getMonth() + 1) + '/' + oDate.getDate());
             return this;
         },
     };
+
+
+    // 将原生Date的相关方法拷贝到原型
+    (function(){
+
+        var getProps = ['getFullYear', 'getMonth', 'getDate', 'getDay', 'getHours', 'getMinutes', 'getSeconds', 'getMilliseconds'],
+            setProps = ['setFullYear', 'setMonth', 'setDate', 'setHours', 'setMinutes', 'setSeconds', 'setMilliseconds'],
+            i, len;
+
+        // 原生获取日期时间的信息部分
+        // getMonth()月份值从1~12
+        for(i = 0, len = getProps.length; i < len; i++) {
+            (function(name){
+                easydateCreate.prototype[name] = function() {
+                    return this.date[name]() + (name === 'getMonth' ? 1 : 0);
+                };
+            })(getProps[i]);
+        }
+
+        // 原生设置日期时间的信息部分
+        // setMonth()月份值从1~12
+        for(i = 0, len = setProps.length; i < len; i++) {
+            (function(name){
+                easydateCreate.prototype[name] = function(num) {
+                    this.date[name](name === 'setMonth' ? num - 1 : num);
+                    return this;
+                };
+            })(setProps[i]);
+        }
+    })();
+
+
+    /**
+     * 判断一个日期字符串、日期对象是否是有效的日期时间
+     * @param  {String|Date}  dateStr 需要判断的日期
+     * @return {Boolean}
+     */
+    easydate.isValid = function(dateStr) {
+        var oDate = createDate(dateStr || '');
+        return !isNaN(oDate.getFullYear());
+    };
+
+
+    /**
+     * 判断一个年份是否是闰年
+     * @param  {Number}  year
+     * @return {Boolean}
+     */
+    easydate.isLeapYear = function(year) {
+
+        year = Number(year);
+
+        // 判断是否为闰年（普通年能被4整除且不能被100整除的年份是闰年，世纪年能被400整除的年份是闰年）
+        return isNaN(year) ? false : (year % 400 === 0 || year % 4 === 0 && year % 100 !== 0);
+    };
+
+
+    /**
+     * 根据传递参数的不同构建一个Date类型的对象
+     * @return {Date}
+     */
+    function createDate(dateStr) {
+
+        var oDate;
+
+        // 日期字符串
+        if(typeof dateStr === 'string') {
+            oDate = new Date(dateStr.replace(/-/g, '/'));  // IE8不支持 2016-01-02 这种字符串转换
+        }
+        // 时间戳
+        else if(typeof dateStr === 'number') {
+            oDate = new Date(dateStr);
+        }
+        // 日期对象
+        else if(dateStr && Object.prototype.toString.call(new Date()).toLowerCase() === "[object date]") {
+            oDate = new Date(dateStr.getTime());  // 新建实例，避免对原对象进行覆盖
+        }
+        // 缺省参数，默认为当前时间
+        else {
+            oDate = new Date();
+        }
+
+        return oDate;
+    }
 
 
     /**
@@ -190,6 +273,6 @@
     }
 
 
-    // 返回easyDate
-    return easyDate;
+    // 返回easydate
+    return easydate;
 });

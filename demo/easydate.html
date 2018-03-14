@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <title>easyDate.js 一款简易实用的日期时间操作函数！</title>
+    <title>easydate.js 一款简易实用的日期时间操作函数！</title>
     <script src="../src/easydate.js"></script>
 </head>
 <body>
@@ -11,47 +11,88 @@
     // ================================================
 
     // 给定日期字符串
-    const edate = easyDate('2018/03/17 16:08:32');
+    const edate = easydate('2018/03/17 16:08:32');
 
     // 给定时间戳
-    const edate2 = easyDate(1521274112000);
+    const edate2 = easydate(1521274112000);
 
     // 给定已有日期对象
-    const edate3 = easyDate(new Date());
+    const edate3 = easydate(new Date());
 
     // 默认当前系统时间
-    const edate4 = easyDate();
+    const edate4 = easydate();
 
 
-
-    // 打印日期时间
+    // 获取日期时间的信息部分
+    // getMonth()月份值从1~12
+    // getDay()值从0~6表示周日~周六
     // ================================================
+    console.log('日期对象:', edate.date);
+    console.log('判断日期时间的有效性:', edate.isValid());  // true
+    console.log('判断是否是闰年:', edate.isLeapYear());     // false
+    console.log('返回毫秒级快照:', edate.valueOf());        // 1521274112000
+    console.log('返回年份:', edate.getFullYear());          // 2018
+    console.log('返回月份:', edate.getMonth());             // 3
+    console.log('返回当月的第几天:', edate.getDate());      // 17
+    console.log('返回当周的第几天:', edate.getDay());       // 6
+    console.log('返回时钟:', edate.getHours());             // 16
+    console.log('返回分钟:', edate.getMinutes());           // 8
+    console.log('返回秒钟:', edate.getSeconds());           // 32
+    console.log('返回毫秒数:', edate.getMilliseconds());    // 0
 
-    console.log('返回日期对象:', edate.datetime);
-    console.log('返回毫秒级快照:', edate.valueOf());  // 1521274112000
-    console.log('返回日期的字符串表示:', edate.toString());  // '2018/03/17 16:08:32'
-    console.log('格式化输出:', edate.format());  // '2018/03/17 16:08:32'
-    console.log('格式化输出:', edate.format('yy-M-d H:m:s'));  // '18/3/17 16:8:32'
-    console.log('格式化输出:', edate.format('yyyy-MM-dd HH:mm:ss'));  // '2018/03/17 16:08:32'
-    console.log('格式化输出:', edate.format('yyyy年MM月dd日 tt hh:mm:ss'));  // '2018年03月17日 下午 04:08:32'
+
+    // 日期时间的格式化输出
+    // ================================================
+    console.log('返回日期的字符串表示:', edate.toString());       // '2018/03/17 16:08:32'
+    console.log('格式化输出:', edate.format());                  // '2018/03/17 16:08:32'
+    console.log('格式化输出:', edate.format('yy-M-d H:m:s'));    // '18/3/17 16:8:32'
+    console.log('格式化输出:', edate.format('yyyy-MM-dd HH:mm:ss'));    // '2018/03/17 16:08:32'
+    console.log('格式化输出:', edate.format('yyyy年MM月dd日 tt hh:mm:ss'));   // '2018年03月17日 下午 04:08:32'
 
 
     // 日期时间的计算
+    // 返回easydate
     // ================================================
 
-    console.log('秒钟+1:', edate.calc('second', 1));  // Sat Mar 17 2018 16:08:33 GMT+0800 (中国标准时间)
-    console.log('分钟+1:', edate.calc('minute', 1));  // Sat Mar 17 2018 16:09:33 GMT+0800 (中国标准时间)
-    console.log('时钟+1:', edate.calc('hour', 1));  // Sat Mar 17 2018 17:09:33 GMT+0800 (中国标准时间)
-    console.log('天数+1:', edate.calc('day', 1));  // Sun Mar 18 2018 17:09:33 GMT+0800 (中国标准时间)
-    console.log('月份+1:', edate.calc('month', 1));  // Wed Apr 18 2018 17:09:33 GMT+0800 (中国标准时间)
-    console.log('年份+1:', edate.calc('year', 1));  // Thu Apr 18 2019 17:09:33 GMT+0800 (中国标准时间)
-    console.log('截取日期部分', edate.toDatePart());  // Thu Apr 18 2019 00:00:00 GMT+0800 (中国标准时间)
+    console.log('秒钟+1:', edate.calc('second', 1));  // 2018/03/17 16:08:33
+    console.log('分钟+1:', edate.calc('minute', 1));  // 2018/03/17 16:09:33
+    console.log('时钟+1:', edate.calc('hour', 1));    // 2018/03/17 17:09:33
+    console.log('天数+1:', edate.calc('day', 1));     // 2018/03/18 17:09:33
+    console.log('月份+1:', edate.calc('month', 1));   // 2018/04/18 17:09:33
+    console.log('年份+1:', edate.calc('year', 1));    // 2019/04/18 17:09:33
+    console.log('截取日期部分', edate.toDatePart());  // 2018/04/18 00:00:00
+
+
+
+    // 设置日期时间的指定部分
+    // 返回easydate，setMonth()月份值从1~12
+    // ================================================
+
+    console.log('设置年份', edate.setFullYear(2019));  // 2018/04/18 00:00:00
+    console.log('设置月份', edate.setMonth(6));        // 2018/06/18 00:00:00
+    console.log('设置当月的第几天', edate.setDate(25));  // 2018/06/25 00:00:00
+    console.log('设置时钟', edate.setHours(10));         // 2018/06/25 10:00:00
+    console.log('设置分钟', edate.setMinutes(32));       // 2018/06/25 10:32:00
+    console.log('设置秒钟', edate.setSeconds(58));       // 2018/06/25 10:32:58
+    console.log('设置毫秒', edate.setMilliseconds(100)); // 2018/06/25 10:32:58 100
 
 
     // 链式操作
     // ================================================
 
-    console.log('链式操作:', easyDate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).format());  // 2018/03/23 12:00:00
+    console.log('链式操作:', easydate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).format());  // 2018/03/23 12:00:00
+
+
+    // 其他静态方法
+    // ================================================
+
+    console.log('判断日期时间的有效性:', easydate.isValid());
+    console.log('判断日期时间的有效性:', easydate.isValid('2018-03-28 xx:33:25'));
+    console.log('判断日期时间的有效性:', easydate.isValid('2018-03-28 18:33:25'));
+
+    console.log('判断是否为闰年:', easydate.isLeapYear());
+    console.log('判断是否为闰年:', easydate.isLeapYear(2018));
+    console.log('判断是否为闰年:', easydate.isLeapYear(2020));
 </script>
 </body>
 </html>
