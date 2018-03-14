@@ -192,7 +192,7 @@ edate.toDatePart();
 edate.setFullYear(2019);  
 
 // 设置月份 2018/06/18 00:00:00
-edate.edate.setMonth(6);  
+edate.setMonth(6);  
 
 // 设置当月的第几天 2018/06/25 00:00:00
 edate.setDate(25);
@@ -227,13 +227,13 @@ easydate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).for
 
 ```js
 
-// 判断日期时间的有效性，
+// 判断日期时间的有效性
 // 返回值类型: boolean
 easydate.isValid();  // false
 easydate.isValid('2018-03-28 xx:33:25');  // false
 easydate.isValid('2018-03-28 18:33:25');  // true
 
-// 判断是否为闰年，
+// 判断是否为闰年
 // 返回值类型: boolean
 easydate.isLeapYear();  // false
 easydate.isLeapYear(2018);  // false
@@ -254,7 +254,7 @@ easydate.getMonthDays('2018-02-01');  // 28
 easydate.getMonthDays('2018-03-01');  // 31
 easydate.getMonthDays('2018-04-01');  // 30
 
-// 计算两个日期之间的时间差，单位默认以“天”表示。
+// 计算两个日期之间的时间差，单位默认以“天”表示
 easydate.diff('2018-01-01', false);  // NaN
 easydate.diff('2018-01-01', '2018-01-01');  // 相差0天
 easydate.diff('2018-03-14', '2018-03-30');  // 相差16天
