@@ -51,10 +51,38 @@
 
         /**
          * 返回Date的字符串表示
+         * 等同于.format()、.format('yyyy-MM-dd HH:mm:ss')
          * @return {String}
          */
         toString: function() {
             return this.format();
+        },
+
+
+        /**
+         * 返回本地格式的日期时间字符串
+         * @return {String}
+         */
+        toLocaleString: function() {
+            return this.date.toLocaleString();
+        },
+
+
+        /**
+         * 返回本地格式的日期字符串
+         * @return {String}
+         */
+        toLocaleDateString: function() {
+            return this.date.toLocaleDateString();
+        },
+
+
+        /**
+         * 返回本地格式的时间字符串
+         * @return {String}
+         */
+        toLocaleTimeString: function() {
+            return this.date.toLocaleTimeString();
         },
 
 
@@ -143,6 +171,18 @@
                 timeEnd = temp;
             }
             return thisTime >= timeStart && thisTime <= timeEnd;
+        },
+        
+
+        /**
+         * 计算当前日期时间与另一个日期时间的时间差，单位默认以“天”表示。
+         * 如果其中一方为无效日期则返回NaN。
+         * @param  {string|Date} dateStr 另一个日期时间
+         * @param  {string} unit    时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'month'-月/'year'-年/'json'-按级别展示
+         * @return {number|Object}
+         */
+        diff: function (dateStr, unit) {
+            return easydate.diff(this.date, dateStr, unit);
         },
 
 
@@ -355,12 +395,13 @@
      * 如果其中一方为无效日期则返回NaN。
      * @param  {String|Date} startDate 起始日期时间
      * @param  {String|Date} endDate 结束日期时间
-     * @param  {String} unit 时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'json'-按级别展示
+     * @param  {String} unit 时差的计量单位，默认为day。'second'-秒/'minute'-分/'hour'-时/'day'-天/'month'-月/'year'-年/'json'-按级别展示
      * @return {Number}
      */
     easydate.diff = function(startDate, endDate, unit) {
 
-        var startTime, endTime, diffTime, result,
+        var startTemp, endTemp, startTime, endTime, startChange, endChange,
+            diffTime, diffJSON, diffMonth, diffYear, result, temp, name,
             second = 1000,  // 1秒=1000毫秒
             minute = second * 60,  // 1分=60秒
             hour = minute * 60,  // 1小时=60分
@@ -370,10 +411,19 @@
                 'minute': minute,
                 'hour': hour,
                 'day': day
-            };
+            },
+            isReturnJSON = unit === 'json';
 
+        // 确保startDate在endDate之前
         startDate = createDate(startDate || '');
         endDate = createDate(endDate || '');
+
+        if(startDate > endDate) {
+            temp = startDate;
+            startDate = endDate;
+            endDate = temp;
+        }
+
         startTime = startDate.getTime();
         endTime = endDate.getTime();
         diffTime = Math.abs(endTime - startTime);
@@ -381,21 +431,79 @@
         // 如果其中一方为无效日期则返回NaN
         if(isNaN(startTime) || isNaN(endTime)) return NaN;
 
+        // 如果两个日期时间相同则返回0
+        if(startTime === endTime) return 0;
+
         // 计算天、时、分、秒等单位的时间差，其他单位按照天计算时间差
         result = Math.floor(diffTime / (timeJSON[unit] || day));
-        result = diffTime < 0 ? -result : result;
 
         // 按级别展示
-        if(unit === 'json') {
-            return {
-                days: Math.floor(diffTime / timeJSON['hour'] / 24), // 天数
-                hours: Math.floor(diffTime / timeJSON['hour'] % 24), // 小时
-                minites: Math.floor(diffTime / timeJSON['minute'] % 60), // 分钟
-                seconds: Math.floor(diffTime / timeJSON['second'] % 60), // 秒钟
+        if(isReturnJSON) {
+            diffJSON = {
+                year: null,
+                month: null,
+                day: Math.floor(diffTime / timeJSON['hour'] / 24), // 天数
+                hour: Math.floor(diffTime / timeJSON['hour'] % 24), // 小时
+                minite: Math.floor(diffTime / timeJSON['minute'] % 60), // 分钟
+                second: Math.floor(diffTime / timeJSON['second'] % 60), // 秒钟
+                maxUnit: '',  // 最大有效单位
             };
+
+            // 判断最大有效单位
+            if(diffJSON.day !== 0){
+                diffJSON.maxUnit = 'day';
+            }else if(diffJSON.hour !== 0){
+                diffJSON.maxUnit = 'hour';
+            }else if(diffJSON.minite !== 0){
+                diffJSON.maxUnit = 'minite';
+            }else{
+                diffJSON.maxUnit = 'second';
+            }
         }
 
-        return result;
+        // 计算月份时间差
+        if('json|month|year'.indexOf(unit) >= 0) {
+
+            // 将起始日期和结束日期都调整到月初第一天
+            (startTemp = new Date(startDate.getTime())).setDate(1);
+            (endTemp = new Date(endDate.getTime())).setDate(1);
+
+            // 分别计算各自调整的天数
+            startChange = (startTime - startTemp.getTime())/day;
+            endChange = (endTime - endTemp.getTime())/day;
+
+            // 计算相差的月数
+            diffMonth = (endTemp.getFullYear()*12 + endTemp.getMonth()) - (startTemp.getFullYear()*12 + startTemp.getMonth());
+
+            // 如果起始日期的天数大于结束日期的天数，则需要将最终计算的月份减-
+            if(startChange > endChange) {
+                diffMonth--;
+            }
+
+            // 处理剩余天数
+            if(isReturnJSON) {
+                diffJSON['day'] = Math.floor((endDate.getTime() - startDate.setMonth(startDate.getMonth() + diffMonth))/day);
+                if(diffMonth > 0) diffJSON.maxUnit = 'month';
+            }else {
+                result = diffMonth;
+            }
+        }
+
+        // 计算年份时间差
+        if('json|year'.indexOf(unit) >= 0) {
+
+            diffYear = Math.floor(diffMonth / 12);
+
+            if(isReturnJSON) {
+                diffJSON['year'] = diffYear;
+                diffJSON['month'] = diffMonth % 12;
+                if(diffYear > 0) diffJSON.maxUnit = 'year';
+            }else {
+                result = diffYear;
+            }
+        }
+
+        return isReturnJSON ? diffJSON : result;
     };
 
 

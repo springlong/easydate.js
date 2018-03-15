@@ -116,10 +116,6 @@ edate.getMonthDays();
 
 ```js
 
-// 返回日期时间的字符串表示 '2018/03/17 16:08:32'
-// 等同于.format()、.format('yyyy-MM-dd HH:mm:ss')
-edate.toString();
-
 // 格式化输出 '2018/03/17 16:08:32'
 // 等同于.format('yyyy-MM-dd HH:mm:ss')
 edate.format();
@@ -133,6 +129,19 @@ edate.format('yyyy-MM-dd HH:mm:ss');
 // 格式化输出 '2018年03月17日 下午 04:08:32'
 edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
+// 返回日期时间的字符串表示
+// 等同于.format()、.format('yyyy-MM-dd HH:mm:ss')
+edate.toString();
+
+// 返回本地格式的日期时间字符串
+edate.toLocaleString();
+
+// 返回本地格式的日期字符串
+edate.toLocaleDateString();
+
+// 返回本地格式的时间字符串
+edate.toLocaleTimeString();
+
 ```
 
 ### 日期时间的计算
@@ -143,7 +152,7 @@ edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
 ```js
 
-// 参照上面代码中edate的值：
+// edate的参照值：
 // 2018/03/17 16:08:32
 
 // 秒钟+1
@@ -186,7 +195,7 @@ edate.clone();
 
 ```js
 
-// 参照上面代码中edate的值：
+// edate的参照值：
 // 2018/04/18 00:00:00
 
 // 设置年份 2018/04/18 00:00:00
@@ -212,6 +221,28 @@ edate.setMilliseconds(100);
 
 ```
 
+
+### 计算时间差
+
+对于日期比较类方法的参数类型，可以是日期字符串、时间戳、Date对象实例、easydate对象实例。
+
+```js
+
+// edate的参照值：
+// 2018-03-23 12:00:00
+
+edate.diff('2018-03-24 16:30:55', 'json');   // {year: 0, month: 0, day: 1, hour: 4, minite: 30, second: 55}
+edate.diff('2018-03-24 16:30:55', 'year');   // 0 (相差不足1年)
+edate.diff('2018-03-24 16:30:55', 'month');  // 0 (相差不足1个月)
+edate.diff('2018-03-24 16:30:55', 'day');    // 1 (相差1天)
+edate.diff('2018-03-24 16:30:55', 'hour');   // 28 (相差28个小时)
+edate.diff('2018-03-24 16:30:55', 'minute'); // 1710 (相差1710分钟)
+edate.diff('2018-03-24 16:30:55', 'second'); // 102655 (相差102655秒)
+edate.diff('2018-03-24 16:30:55'); 			 // 1 (相差1天)
+
+```
+
+
 ### 链式操作
 
 
@@ -225,21 +256,25 @@ easydate('2018/03/17 16:08:32').toDatePart().calc('day', 6).calc('hour', 12).for
 
 ### 静态方法
 
+对于日期比较类方法的 `dateStr` 参数的类型，可以是日期字符串、时间戳、Date对象实例、easydate对象实例。
 
 ```js
 
+// easydate.isValid(dateStr)
 // 判断日期时间的有效性
 // 返回值类型: boolean
 easydate.isValid();  // false
 easydate.isValid('2018-03-28 xx:33:25');  // false
 easydate.isValid('2018-03-28 18:33:25');  // true
 
+// easydate.isLeapYear(year)
 // 判断是否为闰年
 // 返回值类型: boolean
 easydate.isLeapYear();  // false
 easydate.isLeapYear(2018);  // false
 easydate.isLeapYear(2020);  // true
 
+// easydate.getWeekth(dateStr)
 // 返回一个日期时间处于一年中的第几周
 // 返回值类型：number
 // 如果是无效日期则返回NaN
@@ -247,6 +282,7 @@ easydate.getWeekth('2018-01-01');  // 1
 easydate.getWeekth('2018-12-29');  // 52
 easydate.getWeekth('2018-12-31');  // 53
 
+// easydate.getMonthDays(dateStr)
 // 返回一个日期时间所处的当月有多少天
 // 返回值类型：number
 // 如果是无效日期则返回NaN
@@ -255,13 +291,18 @@ easydate.getMonthDays('2018-02-01');  // 28
 easydate.getMonthDays('2018-03-01');  // 31
 easydate.getMonthDays('2018-04-01');  // 30
 
+// easydate.diff (startDate, endDate, unit)
 // 计算两个日期之间的时间差，单位默认以“天”表示
 easydate.diff('2018-01-01', false);  // NaN
-easydate.diff('2018-01-01', '2018-01-01');  // 相差0天
-easydate.diff('2018-03-14', '2018-03-30');  // 相差16天
-easydate.diff('2018-03-14', '2018-03-10', 'day');  // 相差4天
-easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'json');    // {days: 3, hours: 2, minites: 20, seconds: 1}
-easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'hour');    // 相差74小时
-easydate.diff('2018-01-31 10:30:55', '2018-02-03 12:50:56', 'minute');  // 相差4460分钟
+easydate.diff('2018-01-01', '2018-01-01');  // 0（相差0天）
+easydate.diff('2018-03-14', '2018-03-30');  // 16 （相差16天）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'json');   //  {year: 0, month: 0, day: 25, hour: 2, minite: 20, second: 1, maxUnit: 'day'}
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'json');   //  {year: 1, month: 0, day: 3, hour: 2, minite: 20, second: 1, maxUnit: 'year'}
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'year');   // 1 （相差1年）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'month');  // 12 （相差12个月）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'day');    // 368 （相差368天）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'hour');   // 8834 （相差8834小时）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'minute'); // 530060 （相差530060分钟）
+easydate.diff('2018-01-31 10:30:55', '2019-02-03 12:50:56', 'second'); // 31803601 （相差31803601秒钟）
 
 ```
