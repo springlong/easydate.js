@@ -41,52 +41,6 @@
     easydateCreate.prototype = {
 
         /**
-         * 返回Date的毫秒级快照
-         * @return {Number}
-         */
-        valueOf: function() {
-            return this.date.getTime();
-        },
-
-
-        /**
-         * 返回Date的字符串表示
-         * 等同于.format()、.format('yyyy-MM-dd HH:mm:ss')
-         * @return {String}
-         */
-        toString: function() {
-            return this.format();
-        },
-
-
-        /**
-         * 返回本地格式的日期时间字符串
-         * @return {String}
-         */
-        toLocaleString: function() {
-            return this.date.toLocaleString();
-        },
-
-
-        /**
-         * 返回本地格式的日期字符串
-         * @return {String}
-         */
-        toLocaleDateString: function() {
-            return this.date.toLocaleDateString();
-        },
-
-
-        /**
-         * 返回本地格式的时间字符串
-         * @return {String}
-         */
-        toLocaleTimeString: function() {
-            return this.date.toLocaleTimeString();
-        },
-
-
-        /**
          * 返回当前日期时间属于一年中的第几周，如果是无效日期则返回NaN。
          * @return {number}
          */
@@ -301,19 +255,23 @@
     // 将原生Date的相关方法拷贝到构造函数的原型之中
     (function(){
 
-        var getProps = ['getFullYear', 'getMonth', 'getDate', 'getDay', 'getHours', 'getMinutes', 'getSeconds', 'getMilliseconds'],
+        var getProps = ['getFullYear', 'getDate', 'getDay', 'getHours', 'getMinutes', 'getSeconds', 'getMilliseconds', 'valueOf', 'toString', 'toTimeString', 'toDateString', 'toGMTString', 'toUTCString', 'toLocaleString', 'toLocaleTimeString', 'toLocaleDateString'],
             setProps = ['setFullYear', 'setMonth', 'setDate', 'setHours', 'setMinutes', 'setSeconds', 'setMilliseconds'],
             i, len;
 
         // 原生获取日期时间的信息部分
-        // getMonth()月份值从1~12
         for(i = 0, len = getProps.length; i < len; i++) {
             (function(name){
                 easydateCreate.prototype[name] = function() {
-                    return this.date[name]() + (name === 'getMonth' ? 1 : 0);
+                    return this.date[name]();
                 };
             })(getProps[i]);
         }
+
+        // getMonth()月份值从1~12
+        easydateCreate.prototype['getMonth'] = function() {
+            return this.date['getMonth']() + 1;
+        };
 
         // 原生设置日期时间的信息部分
         // setMonth()月份值从1~12

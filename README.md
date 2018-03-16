@@ -142,6 +142,13 @@ edate.toLocaleDateString();
 // 返回本地格式的时间字符串
 edate.toLocaleTimeString();
 
+// 根据世界时返回日期时间字符串
+// 请使用toUTCString()代替
+edate.toGMTString()；
+
+// 根据世界时返回日期时间字符串
+edate.toUTCString()；
+
 ```
 
 ### 日期时间的计算
