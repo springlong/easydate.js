@@ -129,24 +129,23 @@ edate.format('yyyy-MM-dd HH:mm:ss');
 // 格式化输出 '2018年03月17日 下午 04:08:32'
 edate.format('yyyy年MM月dd日 tt hh:mm:ss');
 
-// 返回日期时间的字符串表示
-// 等同于.format()、.format('yyyy-MM-dd HH:mm:ss')
+// 返回日期时间的字符串表示 'Sat Mar 17 2018 16:08:32 GMT+0800 (中国标准时间)'
 edate.toString();
 
-// 返回本地格式的日期时间字符串
+// 返回本地格式的日期时间字符串 '2018/3/17 下午4:08:32'
 edate.toLocaleString();
 
-// 返回本地格式的日期字符串
+// 返回本地格式的日期字符串 '2018/3/17'
 edate.toLocaleDateString();
 
-// 返回本地格式的时间字符串
+// 返回本地格式的时间字符串 '下午4:08:32'
 edate.toLocaleTimeString();
 
-// 根据世界时返回日期时间字符串
+// 根据世界时返回日期时间字符串 'Sat, 17 Mar 2018 08:08:32 GMT'
 // 请使用toUTCString()代替
 edate.toGMTString()；
 
-// 根据世界时返回日期时间字符串
+// 根据世界时返回日期时间字符串 'Sat, 17 Mar 2018 08:08:32 GMT'
 edate.toUTCString()；
 
 ```
