@@ -1,0 +1,25 @@
+{
+  "name": "easydate.js",
+  "version": "1.0.1",
+  "description": "一款简易实用的JavaScript日期时间处理工具！",
+  "main": "./src/easydate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/springlong/easydate.js.git"
+  },
+  "keywords": [
+    "datetime",
+    "dateformat",
+    "date",
+    "time"
+  ],
+  "author": "springlong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/springlong/easydate.js/issues"
+  },
+  "homepage": "https://github.com/springlong/easydate.js#readme"
+}

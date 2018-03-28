@@ -4,7 +4,33 @@
 
 在原生Date对象的基础上，提供了日期输出的格式化，以及日期时间的加减计算、时差计算、条件判断、链式操作等功能，方便项目中日期时间的处理！
 
+
 ## 使用easydate
+
+Node.js：
+
+```
+npm install easydate.js
+```
+
+```
+const easydate = require('easydate.js');
+```
+
+amd：
+
+```
+define(['easydate.js'], function(easydate){ });
+```
+
+script tag：
+
+```
+<script src="easydate.js"></script>
+```
+
+
+## 关于easydate
 
 ### 使用`easydate`函数创建实例
 
