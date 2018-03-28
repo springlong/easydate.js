@@ -13,19 +13,19 @@ Node.js：
 npm install easydate.js
 ```
 
-```
+```js
 const easydate = require('easydate.js');
 ```
 
 amd：
 
-```
+```js
 define(['easydate.js'], function(easydate){ });
 ```
 
 script tag：
 
-```
+```html
 <script src="easydate.js"></script>
 ```
 
