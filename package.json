@@ -1,6 +1,6 @@
 {
   "name": "easydate.js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "一款简易实用的JavaScript日期时间处理工具！",
   "main": "./src/easydate.js",
   "scripts": {
