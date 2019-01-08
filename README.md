@@ -141,7 +141,6 @@ edate.getMonthDays();
 1. `tt` - 上午/下午
 1. `S` - 毫秒
 
-
 ```js
 
 // 格式化输出 '2018/03/17 16:08:32'
@@ -191,31 +190,31 @@ edate.toUTCString()；
 
 // 秒钟+1
 // 2018/03/17 16:08:33
-edate.calc('second', 1);  
+edate.calc('second', 1);
 
 // 分钟+1
 // 2018/03/17 16:09:33
-edate.calc('minute', 1);  
+edate.calc('minute', 1);
 
 // 时钟+1
 // 2018/03/17 17:09:33
-edate.calc('hour', 1);  
+edate.calc('hour', 1);
 
 // 天数+1
 // 2018/03/18 17:09:33
-edate.calc('day', 1);  
+edate.calc('day', 1);
 
 // 月份+1
 // 2018/04/18 17:09:33
-edate.calc('month', 1);  
+edate.calc('month', 1);
 
 // 年份+1
 // 2019/04/18 17:09:33
-edate.calc('year', 1);  
+edate.calc('year', 1);
 
 // 截取日期部分
 // 2018/04/18 00:00:00
-edate.toDatePart();  
+edate.toDatePart();
 
 // 克隆一份副本
 // 2018/04/18 00:00:00
@@ -233,10 +232,10 @@ edate.clone();
 // 2018/04/18 00:00:00
 
 // 设置年份 2018/04/18 00:00:00
-edate.setFullYear(2019);  
+edate.setFullYear(2019);
 
 // 设置月份 2018/06/18 00:00:00
-edate.setMonth(6);  
+edate.setMonth(6);
 
 // 设置当月的第几天 2018/06/25 00:00:00
 edate.setDate(25);
